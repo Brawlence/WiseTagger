@@ -77,6 +77,9 @@ public:
 		/// Enable making author handles first when sorting.
 		bool force_author_handle_first = false;
 
+		/// Enable removal of tags which are already present in full file path
+		bool remove_tags_found_in_path = false;
+
 		/// Do tag sorting.
 		bool sort = true;
 

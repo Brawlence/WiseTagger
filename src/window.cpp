@@ -62,9 +62,11 @@ namespace logging_category {
 
 #define SETT_PLAY_MUTE          QStringLiteral("window/video_mute")
 
-#define SETT_REPLACE_TAGS       QStringLiteral("imageboard/replace-tags")
-#define SETT_RESTORE_TAGS       QStringLiteral("imageboard/restore-tags")
+#define SETT_REPLACE_TAGS	QStringLiteral("imageboard/replace-tags")
+#define SETT_RESTORE_TAGS	QStringLiteral("imageboard/restore-tags")
 #define SETT_FORCE_AUTHOR_FIRST	QStringLiteral("imageboard/force-author-first")
+#define SETT_COUNT_PATH_AS_TAGS	QStringLiteral("imageboard/count-path-as-tags")
+
 
 #ifdef Q_OS_WIN
 #define SETT_LAST_VER_CHECK     QStringLiteral("last-version-check")
@@ -103,6 +105,7 @@ Window::Window(QWidget *_parent) : QMainWindow(_parent)
 	, a_ib_replace(      tr("Re&place Imageboard Tags"), nullptr)
 	, a_ib_restore(      tr("Re&store Imageboard Tags"), nullptr)
 	, a_tag_forcefirst(  tr("&Force Author Tags First"), nullptr)
+	, a_tag_dedup_path(  tr("Remove Tags Found &in File Path"), nullptr)
 	, a_show_settings(   tr("P&references..."), nullptr)
 	, a_view_normal(     tr("Show &WiseTagger"), nullptr)
 	, a_view_minimal(    tr("Mi&nimal View"), nullptr)
@@ -552,6 +555,7 @@ void Window::initSettings()
 	a_ib_replace.setChecked(sett.value(SETT_REPLACE_TAGS, false).toBool());
 	a_ib_restore.setChecked(sett.value(SETT_RESTORE_TAGS, true).toBool());
 	a_tag_forcefirst.setChecked(sett.value(SETT_FORCE_AUTHOR_FIRST, false).toBool());
+	a_tag_dedup_path.setChecked(sett.value(SETT_COUNT_PATH_AS_TAGS, false).toBool());
 
 	m_show_current_directory = sett.value(SETT_SHOW_CURRENT_DIR, true).toBool();
 
@@ -796,10 +800,13 @@ void Window::createActions()
 	a_ib_replace.setStatusTip(    tr("Toggle replacing certain imageboard tags with their shorter version."));
 	a_ib_restore.setStatusTip(    tr("Toggle restoring imageboard tags back to their original version."));
 	a_tag_forcefirst.setStatusTip(tr("Toggle forcing the author tag to be the first tag in the filename."));
+	a_tag_dedup_path.setStatusTip(tr("Toggle removal of tags already present in the path of the active file."));
 
 	a_ib_replace.setCheckable(true);
 	a_ib_restore.setCheckable(true);
 	a_tag_forcefirst.setCheckable(true);
+	a_tag_dedup_path.setCheckable(true);
+
 	a_view_statusbar.setCheckable(true);
 	a_view_fullscreen.setCheckable(true);
 	a_view_minimal.setCheckable(true);
@@ -912,7 +919,10 @@ void Window::createActions()
 	{
 		QSettings s; s.setValue(SETT_FORCE_AUTHOR_FIRST, checked);
 	});
-
+	connect(&a_tag_dedup_path,  &QAction::triggered, [](bool checked)
+	{
+		QSettings s; s.setValue(SETT_COUNT_PATH_AS_TAGS, checked);
+	});
 	connect(&a_view_statusbar, &QAction::triggered, this, [this](bool checked)
 	{
 		QSettings s; s.setValue(SETT_SHOW_STATUS, checked);
@@ -1144,6 +1154,7 @@ void Window::createMenus()
 	add_action(menu_tray, a_ib_replace);
 	add_action(menu_tray, a_ib_restore);
 	add_action(menu_tray, a_tag_forcefirst);
+	add_action(menu_tray, a_tag_dedup_path);
 	add_separator(menu_tray);
 	add_action(menu_tray, a_show_settings);
 	add_action(menu_tray, a_exit);
@@ -1201,6 +1212,8 @@ void Window::createMenus()
 	add_action(menu_options, a_ib_restore);
 	add_separator(menu_options);
 	add_action(menu_options, a_tag_forcefirst);
+	add_action(menu_options, a_tag_dedup_path);
+	
 	add_separator(menu_options);
 	add_action(menu_options, a_show_settings);
 

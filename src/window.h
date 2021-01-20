@@ -139,6 +139,8 @@ private:
 	QAction a_ib_replace;
 	QAction a_ib_restore;
 	QAction a_tag_forcefirst;
+	QAction a_tag_dedup_path;
+
 	QAction a_show_settings;
 	QAction a_view_normal;
 	QAction a_view_minimal;

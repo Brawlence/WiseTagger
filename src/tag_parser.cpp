@@ -30,6 +30,7 @@ TagParser::FixOptions TagParser::FixOptions::from_settings()
 	opts.replace_imageboard_tags = s.value(QStringLiteral("imageboard/replace-tags"), false).toBool();
 	opts.restore_imageboard_tags = s.value(QStringLiteral("imageboard/restore-tags"), true).toBool();
 	opts.force_author_handle_first = s.value(QStringLiteral("imageboard/force-author-first"), false).toBool();
+	opts.remove_tags_found_in_path = s.value(QStringLiteral("imageboard/count-path-as-tags"), false).toBool();
 	return opts;
 }
 
