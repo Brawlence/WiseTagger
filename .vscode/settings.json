@@ -1,0 +1,15 @@
+{
+    "files.associations": {
+        "type_traits": "cpp",
+        "algorithm": "cpp",
+        "array": "cpp",
+        "qloggingcategory": "cpp",
+        "qkeyevent": "cpp",
+        "qsettings": "cpp",
+        "qstringlist": "cpp",
+        "qobject": "cpp",
+        "qfileinfo": "cpp",
+        "qstyleditemdelegate": "cpp",
+        "qdialog": "cpp"
+    }
+}
