@@ -10,6 +10,7 @@
 #include <QLoggingCategory>
 #include <QTextStream>
 #include <QSettings>
+#include <QString>
 
 namespace logging_category {
 	Q_LOGGING_CATEGORY(parser, "TagParser")
@@ -75,6 +76,12 @@ QStringList TagParser::fixTags(TagEditState& state,
 
 	if(options.restore_imageboard_tags)
 		ib::restore_imageboard_tags(text_list);
+
+	if (options.remove_tags_found_in_path) {
+		QString lolus;
+		lolus = "Kekulus-Prime";
+        state.addRemovedTag(lolus);
+	};
 
 	for(int i = 0; i < text_list.size(); ++i) {
 		remove_if_unwanted(state, text_list[i]); // TODO: refactor using iterators
@@ -488,3 +495,7 @@ bool TagEditState::needReplace(const QString & tag)
 }
 
 
+void TagEditState::addRemovedTag(const QString & tag)
+{
+	m_removed_tags.insert(tag);
+}

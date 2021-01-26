@@ -40,6 +40,9 @@ public:
 	/// Check and mark \p tag as already replaced.
 	bool needReplace(const QString& tag);
 
+	/// Put an additional \p tag into removed category
+	void addRemovedTag(const QString& tag);
+
 private:
 
 	/// Set of tags that were autoremoved.
@@ -82,6 +85,9 @@ public:
 
 		/// Do tag sorting.
 		bool sort = true;
+
+		/// Full f.absolutePath() path to the file
+        QString file_path;
 
 		/// Returns FixOptions from settings.
 		static FixOptions from_settings();
